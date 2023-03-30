@@ -1,0 +1,31 @@
+console.log(`Hello, ${base.name}!`);
+
+const Url='https://chatgptresponse.azurewebsites.net/api/getchatgpt?';
+
+let inputConfig = input.config();
+console.log(`The value of interests is ${inputConfig.interests}`);
+
+async function runAzure(body) {
+
+    const Url = 'https://openaifirst.azurewebsites.net/api/completionAPI?';
+    const bodyjson = '{"model":"text-davinci-003", "prompt":"Write a marketing email to ' + inputConfig.name + ' from Henry, a salesperson from a company called Luxury Aircraft to sell a ' + inputConfig.product + ' to a person with the following interests: ' + inputConfig.interests + '", "max_tokens":400, "temperature":0}'
+    console.log(bodyjson)
+    const otherParam = {
+      body: bodyjson,
+      method: 'POST'
+    };
+
+    const response = await fetch(Url, otherParam);
+    var output = await response.text()
+
+    return {output}
+
+  }
+ 
+let response = await runAzure()
+// console.log(response.output_json)
+// console.log(response.status_code)
+// console.log(response.output_json)
+console.log(response.output)
+output.set('output', response.output)
+console.log('script complete');
